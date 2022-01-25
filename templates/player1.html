@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Player</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <style>
+        .container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.plyr {
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+  // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
+  const player = new Plyr('#player');
+
+  // Expose
+  window.player = player;
+
+  // Bind event listener
+  function on(selector, type, callback) {
+    document.querySelector(selector).addEventListener(type, callback, false);
+  }
+
+//   // Play
+//   on('.js-play', 'click', () => {
+//     player.play();
+//   });
+//
+//   // Pause
+//   on('.js-pause', 'click', () => {
+//     player.pause();
+//   });
+//
+//   // Stop
+//   on('.js-stop', 'click', () => {
+//     player.stop();
+//   });
+//
+//   // Rewind
+//   on('.js-rewind', 'click', () => {
+//     player.rewind();
+//   });
+//
+//   // Forward
+//   on('.js-forward', 'click', () => {
+//     player.forward();
+//   });
+          $(function() {
+    // Включение трека по клику
+    $('.change-video').click(function(){
+        $('.change-video').removeClass('active');
+        $(this).addClass('active');
+        let videourl = $(this).attr('data-video');
+        let videoposter = $(this).attr('data-poster');
+        player.source = {
+            type: 'video',
+            poster: videoposter,
+            sources: [
+                {
+                    src: videourl,
+                    type: 'video/mp4',
+                    size: 720
+                }
+            ]
+        };
+        //player.play(); // если нужно запускать видео сразу по клику, раскомментируйте эту строчку
+    });
+    // Переключение аидео на следующее по окончанию
+    player.on('ended', event => {
+        let nextvideo = $('.change-video.active').next(".change-video");
+        let urlnextvideo = nextvideo.attr('data-video');
+        let urlnextposter = nextvideo.attr('data-poster');
+        if (!urlnextvideo) {
+            player.stop();
+            } else {
+            $('.change-video').removeClass('active');
+            nextvideo.addClass('active');
+            player.source = {
+                type: 'video',
+                poster: urlnextposter,
+                sources: [
+                    {
+                        src: urlnextvideo,
+                        type: 'video/mp4',
+                        size: 720
+                    }
+                ]
+            };
+            player.play(); // если нужно сразу запускать следующее видео, раскомментируйте эту строчку
+        }
+    });
+});
+ });
+
+
+    </script>
+    <!--script libs-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5media/1.1.8/html5media.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
+    <!--Audio player js script-->
+    <!--<script id="rendered-js" src="../static/js/main.js"></script>-->
+</head>
+<body>
+<div class="container">
+    <video controls crossorigin playsinline poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="player">
+                <!-- Video files -->
+                <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">
+                <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4" type="video/mp4" size="720">
+                <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4" type="video/mp4" size="1080">
+                <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4" type="video/mp4" size="1440">
+
+                <!-- Caption files -->
+                <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+                    default>
+                <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+
+                <!-- Fallback for browsers that don't support the <video> element -->
+                <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>
+    </video>
+    <div class="video-list">
+        <div class="change-video active" data-video="{{ url_for('static', filename='videos/video1.mp4')}}" >
+            <!--<img src="{{ url_for('static', filename='photos/Sdat.png')}}" />-->
+            <span>Krolik</span>
+        </div>
+        <div class="change-video" data-video="{{ url_for('static', filename='videos/video2.mp4')}}" >
+        <!--<img src="{{ url_for('static', filename='photos/Sdat.png')}}" />-->
+            <span>Rammstein</span>
+        </div>
+        <div class="change-video" data-video="{{ url_for('static', filename='videos/video3.mp4')}}" >
+        <!--<img src="{{ url_for('static', filename='photos/Sdat.png')}}" />-->
+            <span>Kotki</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
