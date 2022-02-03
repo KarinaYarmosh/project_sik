@@ -30,32 +30,8 @@
     document.querySelector(selector).addEventListener(type, callback, false);
   }
 
-//   // Play
-//   on('.js-play', 'click', () => {
-//     player.play();
-//   });
-//
-//   // Pause
-//   on('.js-pause', 'click', () => {
-//     player.pause();
-//   });
-//
-//   // Stop
-//   on('.js-stop', 'click', () => {
-//     player.stop();
-//   });
-//
-//   // Rewind
-//   on('.js-rewind', 'click', () => {
-//     player.rewind();
-//   });
-//
-//   // Forward
-//   on('.js-forward', 'click', () => {
-//     player.forward();
-//   });
           $(function() {
-    // Включение трека по клику
+
     $('.change-video').click(function(){
         $('.change-video').removeClass('active');
         $(this).addClass('active');
@@ -72,9 +48,9 @@
                 }
             ]
         };
-        //player.play(); // если нужно запускать видео сразу по клику, раскомментируйте эту строчку
+     
     });
-    // Переключение аидео на следующее по окончанию
+
     player.on('ended', event => {
         let nextvideo = $('.change-video.active').next(".change-video");
         let urlnextvideo = nextvideo.attr('data-video');
@@ -95,7 +71,7 @@
                     }
                 ]
             };
-            player.play(); // если нужно сразу запускать следующее видео, раскомментируйте эту строчку
+            player.play(); 
         }
     });
 });
